@@ -1,0 +1,82 @@
+<?php
+$query = $_SERVER['QUERY_STRING'];
+$int = '';
+
+function setInput($query)
+{
+    global $int;
+    $int = array_map('intval', explode(",",$query));
+}
+
+setInput($query);
+averaging($int);
+getMinimum($int);
+getMaximum($int);
+getStandardDeviation($int, $average);
+
+function averaging($int)
+{
+    global $average;
+    $sum = 0;
+    $counter = sizeof($int);
+    /*The first element is the number of students, so ignore it and start from the second
+  element which is the student mark*/
+  for($i = 1; $i < $counter; $i++ )
+  {
+      $sum += $int[$i];
+  }
+  $average = $sum/(sizeof($int) -1);
+  echo"The average is: $average" . "<br>";
+  return $average;
+
+}
+
+function getMinimum($int)
+{
+    $min = 100;
+    $counter =  sizeof($int);
+    /*The first element is the number of students, so ignore it and start from the second
+  element which is the student mark*/
+  for($i = 1; $i < $counter; $i++ )
+  {
+     if($int[$i] < $min)
+     {
+         $min = $int[$i];
+     } 
+  }
+  echo "The minimum mark is: $min". "<br>";
+}
+
+function getMaximum($int)
+{
+    $max = 0;
+    $counter =  sizeof($int);
+    /*The first element is the number of students, so ignore it and start from the second
+  element which is the student mark*/
+  for($i = 1; $i < $counter; $i++ )
+  {
+     if($int[$i] > $max)
+     {
+         $max = $int[$i];
+     } 
+  }
+  echo "The maximum mark is: $max". "<br>";
+}
+
+function getStandardDeviation($int, $average)
+{
+    //declare a variable to store SD
+    //$standardDeviation = 0.00;
+    $counter = sizeof($int);
+    $result = 0.00;
+    for($i = 1; $i < $counter; $i++)
+    {
+        $result += (pow($int[$i],2) - pow($average,2));
+    }
+
+    $result = sqrt($result/($counter-1));
+
+    echo "The standard deviation is: $result". "<br>";
+
+}
+
